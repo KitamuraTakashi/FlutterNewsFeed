@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutterudemy2/screens/pages/about_us_page.dart';
+import 'package:flutterudemy2/screens/pages/head_line_page.dart';
+import 'package:flutterudemy2/screens/pages/news_list_page.dart';
 
 class HomeScreen extends StatefulWidget {
   @override
@@ -6,6 +9,9 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
+  int _currentIndex = 0;
+  final _pages = [HeadLinePage(), NewsListPage(), AboutUsPage()];
+
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -13,7 +19,21 @@ class _HomeScreenState extends State<HomeScreen> {
         //TODO
         body: Center(child: Container()),
         //TODO
-//      bottomNavigationBar: BottomNavigationBar(),
+        bottomNavigationBar:
+            BottomNavigationBar(currentIndex: _currentIndex, items: const [
+          BottomNavigationBarItem(
+            icon: const Icon(Icons.highlight),
+            title: const Text('トップニュース'),
+          ),
+          BottomNavigationBarItem(
+            icon: const Icon(Icons.list),
+            title: const Text('ニュース一覧'),
+          ),
+          BottomNavigationBarItem(
+            icon: const Icon(Icons.info),
+            title: const Text('このアプリについて'),
+          ),
+        ]),
       ),
     );
   }
