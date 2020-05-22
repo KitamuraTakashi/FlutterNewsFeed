@@ -6,7 +6,11 @@ class NewsListPage extends StatelessWidget {
     return SafeArea(
       child: Scaffold(
         //TODO
-        body: Container(),
+        body: Container(
+          child: Center(
+            child: Text("headerline"),
+          ),
+        ),
       ),
     );
   }

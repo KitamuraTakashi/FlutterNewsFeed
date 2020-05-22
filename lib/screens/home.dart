@@ -16,24 +16,28 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
-        //TODO
-        body: Center(child: Container()),
-        //TODO
-        bottomNavigationBar:
-            BottomNavigationBar(currentIndex: _currentIndex, items: const [
-          BottomNavigationBarItem(
-            icon: const Icon(Icons.highlight),
-            title: const Text('トップニュース'),
-          ),
-          BottomNavigationBarItem(
-            icon: const Icon(Icons.list),
-            title: const Text('ニュース一覧'),
-          ),
-          BottomNavigationBarItem(
-            icon: const Icon(Icons.info),
-            title: const Text('このアプリについて'),
-          ),
-        ]),
+        body: _pages[_currentIndex],
+        bottomNavigationBar: BottomNavigationBar(
+            currentIndex: _currentIndex,
+            items: const [
+              BottomNavigationBarItem(
+                icon: const Icon(Icons.highlight),
+                title: const Text('トップニュース'),
+              ),
+              BottomNavigationBarItem(
+                icon: const Icon(Icons.list),
+                title: const Text('ニュース一覧'),
+              ),
+              BottomNavigationBarItem(
+                icon: const Icon(Icons.info),
+                title: const Text('このアプリについて'),
+              )
+            ],
+            onTap: (index) {
+              setState(() {
+                _currentIndex = index;
+              });
+            }),
       ),
     );
   }
