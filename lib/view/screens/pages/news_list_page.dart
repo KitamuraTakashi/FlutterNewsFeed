@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutterudemy2/view/screens/compnents/search_bar.dart';
 
 class NewsListPage extends StatelessWidget {
   @override
@@ -16,7 +17,9 @@ class NewsListPage extends StatelessWidget {
           padding: const EdgeInsets.all(8.0),
           child: Column(
             children: <Widget>[
-//              SearchBar(),
+              SearchBar(
+                onSearch: (keyword) => getKeywordNews(context, keyword),
+              ),
 //              CategoryChips(),
               Expanded(child: Center(child: CircularProgressIndicator()))
             ],
@@ -27,5 +30,12 @@ class NewsListPage extends StatelessWidget {
   }
 
   //TODO　記事更新処理
-  onRefresh(BuildContext context) {}
+  onRefresh(BuildContext context) {
+    print('onReresh');
+  }
+
+  //TODOキーワード記事取得処理
+  getKeywordNews(BuildContext context, keyword) {
+    print('NewslistPage.getkeyword');
+  }
 }

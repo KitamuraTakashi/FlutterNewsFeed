@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutterudemy2/screens/home.dart';
 import 'package:flutterudemy2/style/style.dart';
+import 'package:flutterudemy2/view/screens/home.dart';
 
 void main() => runApp(MyApp());
 

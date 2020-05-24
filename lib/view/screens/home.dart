@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:flutterudemy2/screens/pages/about_us_page.dart';
-import 'package:flutterudemy2/screens/pages/head_line_page.dart';
-import 'package:flutterudemy2/screens/pages/news_list_page.dart';
+import 'package:flutterudemy2/view/screens/pages/about_us_page.dart';
+import 'package:flutterudemy2/view/screens/pages/head_line_page.dart';
+import 'package:flutterudemy2/view/screens/pages/news_list_page.dart';
 
 class HomeScreen extends StatefulWidget {
   @override
