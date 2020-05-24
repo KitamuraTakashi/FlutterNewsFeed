@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutterudemy2/data/category_info.dart';
+import 'package:flutterudemy2/view/screens/compnents/category_chips.dart';
 import 'package:flutterudemy2/view/screens/compnents/search_bar.dart';
 
 class NewsListPage extends StatelessWidget {
@@ -20,7 +22,10 @@ class NewsListPage extends StatelessWidget {
               SearchBar(
                 onSearch: (keyword) => getKeywordNews(context, keyword),
               ),
-//              CategoryChips(),
+              CategoryChips(
+                onCategorySelected: (category) =>
+                    getCategoryNews(context, category),
+              ),
               Expanded(child: Center(child: CircularProgressIndicator()))
             ],
           ),
@@ -37,5 +42,9 @@ class NewsListPage extends StatelessWidget {
   //TODOキーワード記事取得処理
   getKeywordNews(BuildContext context, keyword) {
     print('NewslistPage.getkeyword');
+  }
+
+  getCategoryNews(BuildContext context, Category category) {
+    print('getCategoryNews / category:${category.nameJp}');
   }
 }
