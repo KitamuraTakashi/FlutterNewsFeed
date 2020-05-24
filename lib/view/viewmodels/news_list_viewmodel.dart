@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutterudemy2/data/category_info.dart';
 import 'package:flutterudemy2/data/search_type.dart';
+import 'package:flutterudemy2/models/model/news_model.dart';
 import 'package:flutterudemy2/models/repository/news_repository.dart';
 
 class NewsListViewModel extends ChangeNotifier {
@@ -18,8 +19,10 @@ class NewsListViewModel extends ChangeNotifier {
   bool _isLoading = false;
   bool get isLoading => _isLoading;
 
+  List<Article> _articles = List();
+  List<Article> get articles => _articles;
+
   Future<void> getNews(
-      // ignore: non_constant_identifier_names
       {@required SearchType searchType,
       String keyword,
       Category category}) async {
@@ -30,13 +33,18 @@ class NewsListViewModel extends ChangeNotifier {
     _isLoading = true;
     notifyListeners();
 
-    print(
-        "[ViewModel] searchType: $searchType / keyword: $keyword / category: ${category.nameJp}");
-
-    await _repository.getNews(
+    _articles = await _repository.getNews(
         searchType: _searchType, keyword: _keyword, category: _category);
+
+    print(
+        "searchType: $_searchType / keyword: $_keyword / category: $_category / articles: ${_articles[0].title}");
 
     _isLoading = false;
     notifyListeners();
+  }
+
+  @override
+  void dispose() {
+    _repository.dispose();
   }
 }
