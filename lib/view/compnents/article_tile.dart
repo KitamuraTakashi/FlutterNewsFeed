@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutterudemy2/models/model/news_model.dart';
 import 'package:flutterudemy2/view/compnents/image_from_url.dart';
 
+import 'article_tile_description.dart';
+
 class ArticleTile extends StatelessWidget {
   final Article article;
   final ValueChanged onArticleClicked;
@@ -33,12 +35,11 @@ class ArticleTile extends StatelessWidget {
               ),
               Expanded(
                 flex: 3,
-                child: Column(
-                  children: <Widget>[
-                    Text(article.title),
-                    Text(article.publishDate),
-                    Text(article.description),
-                  ],
+                child: Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: ArticleTileDescripion(
+                    article: article,
+                  ),
                 ),
               )
             ],
