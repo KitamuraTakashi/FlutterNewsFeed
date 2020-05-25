@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutterudemy2/models/model/news_model.dart';
+import 'package:flutterudemy2/view/compnents/image_from_url.dart';
 
 class ArticleTile extends StatelessWidget {
   final Article article;
@@ -23,8 +24,11 @@ class ArticleTile extends StatelessWidget {
             children: <Widget>[
               Expanded(
                 flex: 1,
-                child: Container(
-
+                child: Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: ImageFromUrl(
+                    imageUrl: article.urlToImage,
+                  ),
                 ),
               ),
               Expanded(
