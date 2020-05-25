@@ -9,6 +9,14 @@ import 'package:provider/provider.dart';
 class NewsListPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    final viewModel = Provider.of<NewsListViewModel>(context, listen: false);
+
+    //初期表示の記事
+    if (!viewModel.isLoading && viewModel.articles.isEmpty) {
+      Future(() => viewModel.getNews(
+          searchType: SearchType.CATEGORY, category: categories[0]));
+    }
+
     return SafeArea(
       child: Scaffold(
         floatingActionButton: FloatingActionButton(
@@ -29,7 +37,22 @@ class NewsListPage extends StatelessWidget {
                 onCategorySelected: (category) =>
                     getCategoryNews(context, category),
               ),
-              Expanded(child: Center(child: CircularProgressIndicator()))
+              Expanded(child: Consumer<NewsListViewModel>(
+                builder: (context, model, child) {
+                  return model.isLoading
+                      ? Center(
+                          child: CircularProgressIndicator(),
+                        )
+                      : ListView.builder(
+                          itemCount: model.articles.length,
+                          itemBuilder: (context, int position) => ListTile(
+                            title: Text(model.articles[position].title),
+                            subtitle:
+                                Text(model.articles[position].description),
+                          ),
+                        );
+                },
+              ))
             ],
           ),
         ),
