@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutterudemy2/data/category_info.dart';
 import 'package:flutterudemy2/data/search_type.dart';
+import 'package:flutterudemy2/models/model/news_model.dart';
+import 'package:flutterudemy2/view/compnents/article_tile.dart';
 import 'package:flutterudemy2/view/compnents/category_chips.dart';
 import 'package:flutterudemy2/view/compnents/search_bar.dart';
 import 'package:flutterudemy2/view/viewmodels/news_list_viewmodel.dart';
@@ -45,10 +47,10 @@ class NewsListPage extends StatelessWidget {
                         )
                       : ListView.builder(
                           itemCount: model.articles.length,
-                          itemBuilder: (context, int position) => ListTile(
-                            title: Text(model.articles[position].title),
-                            subtitle:
-                                Text(model.articles[position].description),
+                          itemBuilder: (context, int position) => ArticleTile(
+                            article: model.articles[position],
+                            onArticleClicked: (article) =>
+                                _openArticleWebPage(article, context),
                           ),
                         );
                 },
@@ -67,7 +69,6 @@ class NewsListPage extends StatelessWidget {
         searchType: viewModel.searchType,
         keyword: viewModel.keyword,
         category: viewModel.category);
-    print('onReresh');
   }
 
   //TODOキーワード記事取得処理
@@ -77,13 +78,15 @@ class NewsListPage extends StatelessWidget {
         searchType: SearchType.KEYWORD,
         keyword: keyword,
         category: categories[0]);
-    print('NewslistPage.getkeyword');
   }
 
   Future<void> getCategoryNews(BuildContext context, Category category) async {
     final viewModel = Provider.of<NewsListViewModel>(context, listen: false);
     await viewModel.getNews(
         searchType: SearchType.CATEGORY, category: categories[0]);
-    print('getCategoryNews / category:${category.nameJp}');
+  }
+
+  _openArticleWebPage(Article article, BuildContext context) {
+    print('クリック/ ${article.url}');
   }
 }
