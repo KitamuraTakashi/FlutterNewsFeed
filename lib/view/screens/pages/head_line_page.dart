@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutterudemy2/data/search_type.dart';
+import 'package:flutterudemy2/models/model/news_model.dart';
+import 'package:flutterudemy2/view/compnents/line_item.dart';
 import 'package:flutterudemy2/view/compnents/page_transformer.dart';
 import 'package:flutterudemy2/view/viewmodels/head_line_viewmodel.dart';
 import 'package:provider/provider.dart';
@@ -16,34 +18,31 @@ class HeadLinePage extends StatelessWidget {
 
     return SafeArea(
       child: Scaffold(
-        body: Consumer<HeadLineViewModel>(
-          builder: (context, model, child) {
-            return PageTransformer(
-                pageViewBuilder: (context, pageVisibilityResolver) {
-              return PageView.builder(
-                controller: PageController(),
-                itemCount: model.articles.length,
-                itemBuilder: (context, index) {
-                  final article = model.articles[index];
-                  final pageVisibility =
-                      pageVisibilityResolver.resolvePageVisibility(index);
-                  final visibleFraction = pageVisibility.visibleFraction;
-                  return Opacity(
-                    opacity: visibleFraction,
-                    child: Container(
-                      color: Colors.blueAccent,
-                      child: Column(
-                        children: <Widget>[
-                          Text(article.title),
-                          Text(article.description)
-                        ],
-                      ),
-                    ),
-                  );
-                },
-              );
-            });
-          },
+        body: Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Consumer<HeadLineViewModel>(
+            builder: (context, model, child) {
+              return PageTransformer(
+                  pageViewBuilder: (context, pageVisibilityResolver) {
+                return PageView.builder(
+                  controller: PageController(viewportFraction: 0.85),
+                  itemCount: model.articles.length,
+                  itemBuilder: (context, index) {
+                    final article = model.articles[index];
+                    final pageVisibility =
+                        pageVisibilityResolver.resolvePageVisibility(index);
+                    final visibleFraction = pageVisibility.visibleFraction;
+                    return HeadLineItem(
+                      article: model.articles[index],
+                      pageVisibility: pageVisibility,
+                      onArticleClicked: (article) =>
+                          _openArticleWebPage(context, article),
+                    );
+                  },
+                );
+              });
+            },
+          ),
         ),
         floatingActionButton: FloatingActionButton(
             child: Icon(Icons.refresh), onPressed: () => onRefresh(context)),
@@ -55,5 +54,9 @@ class HeadLinePage extends StatelessWidget {
     print('ヘッド');
     final viewModel = Provider.of<HeadLineViewModel>(context, listen: false);
     await viewModel.getHeadLines(searchType: SearchType.HEAD_LINE);
+  }
+
+  _openArticleWebPage(BuildContext context, Article article) {
+    print('クリック/ ${article.url}');
   }
 }
