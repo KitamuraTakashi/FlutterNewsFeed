@@ -4,6 +4,7 @@ import 'package:flutterudemy2/data/search_type.dart';
 import 'package:flutterudemy2/models/model/news_model.dart';
 import 'package:flutterudemy2/view/compnents/article_tile.dart';
 import 'package:flutterudemy2/view/compnents/category_chips.dart';
+import 'package:flutterudemy2/view/compnents/news_web_page_screen.dart';
 import 'package:flutterudemy2/view/compnents/search_bar.dart';
 import 'package:flutterudemy2/view/viewmodels/news_list_viewmodel.dart';
 import 'package:provider/provider.dart';
@@ -85,6 +86,9 @@ class NewsListPage extends StatelessWidget {
   }
 
   _openArticleWebPage(Article article, BuildContext context) {
-    print('クリック/ ${article.url}');
+    Navigator.of(context).push(MaterialPageRoute(
+        builder: (context) => NewsWebPageScreen(
+              article: article,
+            )));
   }
 }

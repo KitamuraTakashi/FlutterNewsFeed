@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutterudemy2/data/search_type.dart';
 import 'package:flutterudemy2/models/model/news_model.dart';
 import 'package:flutterudemy2/view/compnents/line_item.dart';
+import 'package:flutterudemy2/view/compnents/news_web_page_screen.dart';
 import 'package:flutterudemy2/view/compnents/page_transformer.dart';
 import 'package:flutterudemy2/view/viewmodels/head_line_viewmodel.dart';
 import 'package:provider/provider.dart';
@@ -41,7 +42,7 @@ class HeadLinePage extends StatelessWidget {
                         article: model.articles[index],
                         pageVisibility: pageVisibility,
                         onArticleClicked: (article) =>
-                            _openArticleWebPage(context, article),
+                            _openArticleWebPage(article, context),
                       );
                     },
                   );
@@ -62,7 +63,10 @@ class HeadLinePage extends StatelessWidget {
     await viewModel.getHeadLines(searchType: SearchType.HEAD_LINE);
   }
 
-  _openArticleWebPage(BuildContext context, Article article) {
-    print('クリック/ ${article.url}');
+  _openArticleWebPage(Article article, BuildContext context) {
+    Navigator.of(context).push(MaterialPageRoute(
+        builder: (context) => NewsWebPageScreen(
+              article: article,
+            )));
   }
 }
