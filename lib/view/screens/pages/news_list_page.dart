@@ -62,7 +62,6 @@ class NewsListPage extends StatelessWidget {
     );
   }
 
-  //TODO　記事更新処理
   Future<void> onRefresh(BuildContext context) async {
     final viewModel = Provider.of<NewsListViewModel>(context, listen: false);
     await viewModel.getNews(
@@ -71,7 +70,6 @@ class NewsListPage extends StatelessWidget {
         category: viewModel.category);
   }
 
-  //TODOキーワード記事取得処理
   Future<void> getKeywordNews(BuildContext context, keyword) async {
     final viewModel = Provider.of<NewsListViewModel>(context, listen: false);
     await viewModel.getNews(
@@ -83,7 +81,7 @@ class NewsListPage extends StatelessWidget {
   Future<void> getCategoryNews(BuildContext context, Category category) async {
     final viewModel = Provider.of<NewsListViewModel>(context, listen: false);
     await viewModel.getNews(
-        searchType: SearchType.CATEGORY, category: categories[0]);
+        searchType: SearchType.CATEGORY, category: category);
   }
 
   _openArticleWebPage(Article article, BuildContext context) {

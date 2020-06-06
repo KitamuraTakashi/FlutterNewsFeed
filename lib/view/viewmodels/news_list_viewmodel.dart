@@ -46,5 +46,6 @@ class NewsListViewModel extends ChangeNotifier {
   @override
   void dispose() {
     _repository.dispose();
+    super.dispose();
   }
 }
