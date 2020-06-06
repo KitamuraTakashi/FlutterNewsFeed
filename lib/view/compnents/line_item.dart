@@ -20,8 +20,20 @@ class HeadLineItem extends StatelessWidget {
         child: Stack(
           fit: StackFit.expand,
           children: <Widget>[
-            ImageFromUrl(
-              imageUrl: article.urlToImage,
+            DecoratedBox(
+              position: DecorationPosition.foreground,
+              decoration: BoxDecoration(
+                  gradient: LinearGradient(
+                begin: Alignment.bottomCenter,
+                end: Alignment.topCenter,
+                colors: [
+                  Colors.black87,
+                  Colors.black26,
+                ],
+              )),
+              child: ImageFromUrl(
+                imageUrl: article.urlToImage,
+              ),
             ),
             Positioned(
               bottom: 56.0,
