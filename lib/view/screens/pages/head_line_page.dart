@@ -22,25 +22,31 @@ class HeadLinePage extends StatelessWidget {
           padding: const EdgeInsets.all(8.0),
           child: Consumer<HeadLineViewModel>(
             builder: (context, model, child) {
-              return PageTransformer(
-                  pageViewBuilder: (context, pageVisibilityResolver) {
-                return PageView.builder(
-                  controller: PageController(viewportFraction: 0.85),
-                  itemCount: model.articles.length,
-                  itemBuilder: (context, index) {
-                    final article = model.articles[index];
-                    final pageVisibility =
-                        pageVisibilityResolver.resolvePageVisibility(index);
-                    final visibleFraction = pageVisibility.visibleFraction;
-                    return HeadLineItem(
-                      article: model.articles[index],
-                      pageVisibility: pageVisibility,
-                      onArticleClicked: (article) =>
-                          _openArticleWebPage(context, article),
-                    );
-                  },
+              if (model.isLoading) {
+                return Center(
+                  child: CircularProgressIndicator(),
                 );
-              });
+              } else {
+                return PageTransformer(
+                    pageViewBuilder: (context, pageVisibilityResolver) {
+                  return PageView.builder(
+                    controller: PageController(viewportFraction: 0.85),
+                    itemCount: model.articles.length,
+                    itemBuilder: (context, index) {
+                      final article = model.articles[index];
+                      final pageVisibility =
+                          pageVisibilityResolver.resolvePageVisibility(index);
+                      final visibleFraction = pageVisibility.visibleFraction;
+                      return HeadLineItem(
+                        article: model.articles[index],
+                        pageVisibility: pageVisibility,
+                        onArticleClicked: (article) =>
+                            _openArticleWebPage(context, article),
+                      );
+                    },
+                  );
+                });
+              }
             },
           ),
         ),

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutterudemy2/models/model/news_model.dart';
 import 'package:flutterudemy2/view/compnents/image_from_url.dart';
+import 'package:flutterudemy2/view/compnents/lazy_load_text.dart';
 import 'package:flutterudemy2/view/compnents/page_transformer.dart';
 
 class HeadLineItem extends StatelessWidget {
@@ -39,11 +40,9 @@ class HeadLineItem extends StatelessWidget {
               bottom: 56.0,
               left: 32.0,
               right: 32.0,
-              child: Text(
-                article.title,
-                style:
-                    textTheme.headline6.copyWith(fontWeight: FontWeight.bold),
-                textAlign: TextAlign.center,
+              child: LazyLoadText(
+                text: article.title,
+                pageVisibility: pageVisibility,
               ),
             )
           ],
