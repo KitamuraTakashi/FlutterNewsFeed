@@ -13,7 +13,7 @@ class NewsListViewModel extends ChangeNotifier {
   Category _category = categories[0];
   Category get category => _category;
 
-  String _keyword = '';
+  String _keyword = "";
   String get keyword => _keyword;
 
   bool _isLoading = false;
@@ -34,8 +34,12 @@ class NewsListViewModel extends ChangeNotifier {
     notifyListeners();
 
     _articles = await _repository.getNews(
-        searchType: _searchType, keyword: _keyword, category: _category);
+      searchType: _searchType,
+      keyword: _keyword,
+      category: _category,
+    );
 
+    //print("articles: $_articles");
     print(
         "searchType: $_searchType / keyword: $_keyword / category: $_category / articles: ${_articles[0].title}");
 

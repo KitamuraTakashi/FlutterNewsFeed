@@ -3,11 +3,7 @@ class Category {
   final String nameEn;
   final String nameJp;
 
-  Category({
-    this.categoryId,
-    this.nameEn,
-    this.nameJp,
-  });
+  Category({this.categoryId, this.nameEn, this.nameJp});
 }
 
 final List<Category> categories = [
