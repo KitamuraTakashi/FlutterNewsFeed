@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:flutterudemy2/models/db/dao.dart';
 import 'package:moor/moor.dart';
 import 'package:moor_ffi/moor_ffi.dart';
 import 'package:path/path.dart' as path;
@@ -24,7 +25,7 @@ class ArticleRecords extends Table {
   Set<Column> get primaryKey => {url};
 }
 
-@UseMoor(tables: [ArticleRecords])
+@UseMoor(tables: [ArticleRecords], daos: [NewsDao])
 class MyDataBase extends _$MyDataBase {
   MyDataBase() : super(_openConnection());
 

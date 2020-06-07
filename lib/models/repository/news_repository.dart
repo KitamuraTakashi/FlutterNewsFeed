@@ -2,8 +2,10 @@ import 'package:chopper/chopper.dart';
 import 'package:flutter/material.dart';
 import 'package:flutterudemy2/data/category_info.dart';
 import 'package:flutterudemy2/data/search_type.dart';
+import 'package:flutterudemy2/main.dart';
 import 'package:flutterudemy2/models/model/news_model.dart';
 import 'package:flutterudemy2/models/networking/api_service.dart';
+import 'package:flutterudemy2/util/extentions.dart';
 
 class NewsRepository {
   final ApiService _apiService = ApiService.create();
@@ -49,5 +51,16 @@ class NewsRepository {
   //Apiへの接続をやめる
   void dispose() {
     _apiService.dispose();
+  }
+
+  Future<List<Article>> insertAndReadFromDB(responseBody) async {
+    final dao = myDataBase.newsDao;
+    final articles = News.fromJson(responseBody).articles;
+
+    // Webから取得した記事リストをDBのテーブルクラスに変換してDB登録・取得
+    final articleRecords =
+        await dao.insertAndNewsFromDB(articles.toArticleRecords(articles));
+
+    return articleRecords.toArticles(articleRecords);
   }
 }
