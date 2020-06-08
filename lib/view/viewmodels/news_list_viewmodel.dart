@@ -1,11 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutterudemy2/data/category_info.dart';
+import 'package:flutterudemy2/data/load_status.dart';
 import 'package:flutterudemy2/data/search_type.dart';
 import 'package:flutterudemy2/models/model/news_model.dart';
 import 'package:flutterudemy2/models/repository/news_repository.dart';
 
 class NewsListViewModel extends ChangeNotifier {
-  final NewsRepository _repository = NewsRepository();
+  final NewsRepository _repository;
+
+  NewsListViewModel({repository}) : _repository = repository;
 
   SearchType _searchType = SearchType.CATEGORY;
   SearchType get searchType => _searchType;
@@ -16,8 +19,8 @@ class NewsListViewModel extends ChangeNotifier {
   String _keyword = "";
   String get keyword => _keyword;
 
-  bool _isLoading = false;
-  bool get isLoading => _isLoading;
+  LoadStatus _loadStatus = LoadStatus.DONE;
+  LoadStatus get loadStatus => _loadStatus;
 
   List<Article> _articles = List();
   List<Article> get articles => _articles;
@@ -30,26 +33,22 @@ class NewsListViewModel extends ChangeNotifier {
     _keyword = keyword;
     _category = category;
 
-    _isLoading = true;
-    notifyListeners();
-
     _articles = await _repository.getNews(
       searchType: _searchType,
       keyword: _keyword,
       category: _category,
     );
-
-    //print("articles: $_articles");
-    print(
-        "searchType: $_searchType / keyword: $_keyword / category: $_category / articles: ${_articles[0].title}");
-
-    _isLoading = false;
-    notifyListeners();
   }
 
   @override
   void dispose() {
     _repository.dispose();
     super.dispose();
+  }
+
+  onRepositoryUpdated(NewsRepository repository) {
+    _articles = repository.articles;
+    _loadStatus = repository.loadStatus;
+    notifyListeners();
   }
 }

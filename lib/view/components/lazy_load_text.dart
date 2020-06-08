@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutterudemy2/view/compnents/page_transformer.dart';
+import 'package:flutterudemy2/view/components/page_transformer.dart';
 
 class LazyLoadText extends StatelessWidget {
   final String text;

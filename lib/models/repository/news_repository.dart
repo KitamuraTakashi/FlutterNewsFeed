@@ -1,13 +1,14 @@
 import 'package:chopper/chopper.dart';
 import 'package:flutter/material.dart';
 import 'package:flutterudemy2/data/category_info.dart';
+import 'package:flutterudemy2/data/load_status.dart';
 import 'package:flutterudemy2/data/search_type.dart';
 import 'package:flutterudemy2/models/db/dao.dart';
 import 'package:flutterudemy2/models/model/news_model.dart';
 import 'package:flutterudemy2/models/networking/api_service.dart';
 import 'package:flutterudemy2/util/extentions.dart';
 
-class NewsRepository {
+class NewsRepository extends ChangeNotifier {
   final ApiService _apiService;
   final NewsDao _dao;
 
@@ -15,12 +16,18 @@ class NewsRepository {
       : _apiService = apiService,
         _dao = dao;
 
-  Future<List<Article>> getNews(
+  List<Article> _articles = List();
+  List<Article> get articles => _articles;
+
+  LoadStatus _loadStatus = LoadStatus.DONE;
+  LoadStatus get loadStatus => _loadStatus;
+
+  getNews(
       {@required SearchType searchType,
       String keyword,
       Category category}) async {
-    List<Article> result = List<Article>();
-
+    _loadStatus = LoadStatus.LOADING;
+    notifyListeners();
     Response response;
 
     try {
@@ -41,30 +48,35 @@ class NewsRepository {
       if (response.isSuccessful) {
         final responseBody = response.body;
         print("responseBody: $responseBody");
-        result = News.fromJson(responseBody).articles;
+        await insertAndReadFromDB(responseBody);
+        notifyListeners();
       } else {
         final errorCode = response.statusCode;
         final error = response.error;
+        _loadStatus = LoadStatus.RESPONSE_ERROR;
         print("response is not successful: $errorCode / $error");
       }
     } on Exception catch (error) {
       print("error: $error");
+    } finally {
+      notifyListeners();
     }
-    return result;
   }
 
-  //Apiへの接続をやめる
+  @override
   void dispose() {
     _apiService.dispose();
+    super.dispose();
   }
 
-  Future<List<Article>> insertAndReadFromDB(responseBody) async {
-    final articles = News.fromJson(responseBody).articles;
+  insertAndReadFromDB(responseBody) async {
+    final articlesFromNetwork = News.fromJson(responseBody).articles;
 
     // Webから取得した記事リストをDBのテーブルクラスに変換してDB登録・取得
-    final articleRecords =
-        await _dao.insertAndNewsFromDB(articles.toArticleRecords(articles));
+    final articlesFromDB = await _dao.insertAndNewsFromDB(
+        articlesFromNetwork.toArticleRecords(articlesFromNetwork));
 
-    return articleRecords.toArticles(articleRecords);
+    _articles = articlesFromDB.toArticles(articlesFromDB);
+    _loadStatus = LoadStatus.DONE;
   }
 }

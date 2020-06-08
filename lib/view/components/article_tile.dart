@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutterudemy2/models/model/news_model.dart';
-import 'package:flutterudemy2/view/compnents/image_from_url.dart';
+import 'package:flutterudemy2/view/components/image_from_url.dart';
 
 import 'article_tile_description.dart';
 

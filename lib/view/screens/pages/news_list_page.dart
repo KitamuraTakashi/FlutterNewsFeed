@@ -1,12 +1,13 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutterudemy2/data/category_info.dart';
+import 'package:flutterudemy2/data/load_status.dart';
 import 'package:flutterudemy2/data/search_type.dart';
 import 'package:flutterudemy2/models/model/news_model.dart';
-import 'package:flutterudemy2/view/compnents/article_tile.dart';
-import 'package:flutterudemy2/view/compnents/category_chips.dart';
-import 'package:flutterudemy2/view/compnents/news_web_page_screen.dart';
-import 'package:flutterudemy2/view/compnents/search_bar.dart';
+import 'package:flutterudemy2/view/components/article_tile.dart';
+import 'package:flutterudemy2/view/components/category_chips.dart';
+import 'package:flutterudemy2/view/components/news_web_page_screen.dart';
+import 'package:flutterudemy2/view/components/search_bar.dart';
 import 'package:flutterudemy2/view/viewmodels/news_list_viewmodel.dart';
 import 'package:provider/provider.dart';
 
@@ -15,7 +16,8 @@ class NewsListPage extends StatelessWidget {
   Widget build(BuildContext context) {
     final viewModel = Provider.of<NewsListViewModel>(context, listen: false);
 
-    if (!viewModel.isLoading && viewModel.articles.isEmpty) {
+    if (viewModel.loadStatus == LoadStatus.LOADING &&
+        viewModel.articles.isEmpty) {
       Future(() => viewModel.getNews(
           searchType: SearchType.CATEGORY, category: categories[0]));
     }
@@ -38,21 +40,22 @@ class NewsListPage extends StatelessWidget {
                 onCategorySelected: (category) =>
                     getCategoryNews(context, category),
               ),
-              //TODO 記事表示
               Expanded(
                 child: Consumer<NewsListViewModel>(
                   builder: (context, model, child) {
-                    return model.isLoading
-                        ? Center(
-                            child: CircularProgressIndicator(),
-                          )
-                        : ListView.builder(
-                            itemCount: model.articles.length,
-                            itemBuilder: (context, int position) => ArticleTile(
-                                  article: model.articles[position],
-                                  onArticleClicked: (article) =>
-                                      _openArticleWebPage(article, context),
-                                ));
+                    if (model.loadStatus == LoadStatus.LOADING) {
+                      return Center(
+                        child: CircularProgressIndicator(),
+                      );
+                    } else {
+                      return ListView.builder(
+                          itemCount: model.articles.length,
+                          itemBuilder: (context, int position) => ArticleTile(
+                                article: model.articles[position],
+                                onArticleClicked: (article) =>
+                                    _openArticleWebPage(article, context),
+                              ));
+                    }
                   },
                 ),
               ),
